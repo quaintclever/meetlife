@@ -1,3 +1,9 @@
+## 简介
+memo save & search, 备忘录 保存和搜索小项目. 自己运行记录一些事情
+
+> 目前参考了七米大佬的项目, 简单搭建了 gin / gorm 的项目:
+https://github.com/Q1mi/bubble
+
 ### docker 启动 mysql, 并挂在到 宿主机
 
 #### 第一次构建启动

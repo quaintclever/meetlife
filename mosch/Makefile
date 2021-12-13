@@ -6,7 +6,7 @@ vendor:
 	go mod vendor -v
 
 .PHONY: darwin
-build:
+build: vendor
 	go build -mod=vendor -trimpath -o bin/$(SERVICE)
 
 .PHONY: run
