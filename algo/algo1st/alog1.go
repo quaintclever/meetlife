@@ -1,5 +1,37 @@
 package algo1st
 
+import (
+	"fmt"
+	"meetlife/algo/tool"
+)
+
+// 807. 保持城市天际线
+func maxIncreaseKeepingSkyline(grid [][]int) int {
+	l := len(grid)
+	row := make([]int, l, l)
+	col := make([]int, l, l)
+	for i := 0; i < l; i++ {
+		for j := 0; j < l; j++ {
+			if grid[i][j] > row[i] {
+				row[i] = grid[i][j]
+			}
+			if grid[i][j] > col[j] {
+				col[j] = grid[i][j]
+			}
+		}
+	}
+	ans := 0
+	for i := 0; i < l; i++ {
+		for j := 0; j < l; j++ {
+			if grid[i][j] < row[i] && grid[i][j] < col[j] {
+				ans += tool.Min(row[i], col[j]) - grid[i][j]
+			}
+		}
+	}
+	fmt.Printf("row:=%v \n col:=%v", row, col)
+	return ans
+}
+
 // 709. 转换成小写字母
 func toLowerCase(str string) string {
 	ans := []byte(str)
