@@ -11,5 +11,5 @@ build:
 
 .PHONY: run
 run: build
-	bin/$(SERVICE) serve bin/local.yaml
+	bin/$(SERVICE) config/config-local.ini
 
