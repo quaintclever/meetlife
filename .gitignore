@@ -16,3 +16,4 @@ vendor/
 
 # quaint used
 mosch/bin/
+.idea
