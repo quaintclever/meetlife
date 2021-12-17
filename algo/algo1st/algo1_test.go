@@ -1,13 +1,27 @@
 package algo1st
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
 )
 
 func Test(t *testing.T) {
+	got := 1
+	want := 1
+	if !reflect.DeepEqual(got, want) {
+		t.Error("error")
+	}
+}
 
+func TestNumWaterBottles(t *testing.T) {
+	got := numWaterBottles(15, 4)
+	want := 19
+	fmt.Println(got)
+	if !reflect.DeepEqual(got, want) {
+		t.Error("error")
+	}
 }
 
 func TestMaxIncreaseKeepingSkyline(t *testing.T) {

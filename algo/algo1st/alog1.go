@@ -5,6 +5,19 @@ import (
 	"meetlife/algo/tool"
 )
 
+// 1518. 换酒问题
+func numWaterBottles(numBottles int, numExchange int) int {
+	ans := 0 // 喝了多少瓶
+	b := 0   // 空瓶
+	for numBottles > 0 {
+		ans += numBottles               // 开喝
+		temp := numBottles + b          // 本次空瓶数
+		numBottles = temp / numExchange // 兑换酒
+		b = temp % numExchange          // 换完 还剩多少瓶
+	}
+	return ans
+}
+
 // 807. 保持城市天际线
 func maxIncreaseKeepingSkyline(grid [][]int) int {
 	l := len(grid)
