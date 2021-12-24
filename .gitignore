@@ -16,6 +16,6 @@ vendor/
 vlumes/
 
 # quaint used
-mosch/bin/
+bin/
 mosch/vendor/
 .idea
