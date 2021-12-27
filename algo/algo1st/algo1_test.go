@@ -15,6 +15,17 @@ func Test(t *testing.T) {
 	}
 }
 
+func TestNumFriendRequests(t *testing.T) {
+	cs := [][]int{{16, 16}, {16, 17, 18}, {20, 30, 100, 110, 120}, {16, 16, 16, 16, 16, 16, 16, 16}}
+	want := []int{2, 2, 3, 56}
+	for i, c := range cs {
+		got := numFriendRequests(c)
+		if !reflect.DeepEqual(got, want[i]) {
+			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
+		}
+	}
+}
+
 func TestNumWaterBottles(t *testing.T) {
 	got := numWaterBottles(15, 4)
 	want := 19

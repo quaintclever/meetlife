@@ -1,9 +1,37 @@
 package algo1st
 
 import (
+	"algo/tool"
 	"fmt"
-	"meetlife/algo/tool"
+	"sort"
 )
+
+// 825. 适龄的朋友
+func numFriendRequests(ages []int) int {
+	ans := 0
+	l := len(ages)
+	sort.Ints(ages)
+	cache := make(map[int]int, 10)
+	for y := 0; y < l; y++ {
+		if i := cache[ages[y]]; i != 0 {
+			ans += i
+			continue
+		}
+
+		temp := 0
+		for x := y + 1; x < l; x++ {
+			// 把后面的不过的case 也剪掉
+			if ages[y] > ages[x]/2+7 {
+				temp++
+			} else {
+				break
+			}
+		}
+		cache[ages[y]] = temp
+		ans += temp
+	}
+	return ans
+}
 
 // 1518. 换酒问题
 func numWaterBottles(numBottles int, numExchange int) int {
