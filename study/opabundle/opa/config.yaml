@@ -1,27 +1,24 @@
 # ======= 服务 =======
 services:
   # 服务名
-  - name: quaint-opa
+  - name: bundle
     # 用于联系服务的基本url
-    url: https://example.com/control-plane-api/v1
+    url: http://localhost:8888/
     credentials:
       bearer:
         token: "bGFza2RqZmxha3NkamZsa2Fqc2Rsa2ZqYWtsc2RqZmtramRmYWxkc2tm"
 
 # 标签, opa上传决策日志和状态信息时会包含标签
 labels:
-  app: quaint-opa
-  region: west
+  app: myopa
   environment: production
 
 bundles:
   authz:
     # 用于联系远程服务器的服务名称。
-    service: quaint-opa
+    service: bundle
     # 用于从配置的服务下载包的资源路径。
-    resource: bundles/http/example/authz.tar.gz
-    # 包持久化到磁盘
-    persist: true
+    resource: bundle/rbac.tar.gz
     polling:
       # bundle 下载等待的最短时间。
       min_delay_seconds: 300
@@ -30,7 +27,7 @@ bundles:
 
 # 决策日志
 decision_logs:
-  service: quaint-opa
+  service: bundle
   # partition_name为区分上传地址,会跟到 /logs 后, 即：
   # http://demo-server:8888/logs/bundle
   # 注意上传的是gzip日志文件
@@ -42,9 +39,9 @@ decision_logs:
 # 状态
 status:
   # 用于联系远程服务器的服务名称
-  service: quaint-opa
+  service: bundle
   # 即 http://demo-server:8888/status/bundle
   partition_name: bundle
 
 # 默认决策路径
-default_decision: /http/example/authz/allow
+default_decision: /rbac/allow

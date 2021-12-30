@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"/opa/internal/opa"
+	"opa/internal/opa"
 
 	"github.com/gorilla/mux"
 )

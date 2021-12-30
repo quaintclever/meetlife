@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"opasrv/opa"
+	"opasrv/eval"
 	"os"
 	"strconv"
 	"strings"
@@ -61,11 +61,12 @@ func main() {
 	router.HandleFunc("/bundle/{file}", handleBundleFile)
 	router.HandleFunc("/logs/{partition}", echo)
 	router.HandleFunc("/status/{partition}", echo)
-	router.HandleFunc("/auth", opa.OpaEval)
+	router.HandleFunc("/auth", eval.OpaEval)
 	srv := &http.Server{
 		Handler: router,
 		Addr:    "0.0.0.0:8888",
 	}
+	fmt.Println("opa-service start success!")
 	log.Fatal(srv.ListenAndServe())
 }
 
