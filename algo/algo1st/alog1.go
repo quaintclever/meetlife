@@ -3,8 +3,21 @@ package algo1st
 import (
 	"algo/tool"
 	"fmt"
+	"math"
 	"sort"
 )
+
+// 507. 完美数
+func checkPerfectNumber(num int) bool {
+	ans := 1
+	limit := int(math.Sqrt(float64(num)))
+	for i := 2; i <= limit; i++ {
+		if num%i == 0 {
+			ans += i + num/i
+		}
+	}
+	return num != 1 && ans == num
+}
 
 // 825. 适龄的朋友
 func numFriendRequests(ages []int) int {

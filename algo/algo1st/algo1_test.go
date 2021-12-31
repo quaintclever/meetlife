@@ -15,6 +15,17 @@ func Test(t *testing.T) {
 	}
 }
 
+func TestCheckPerfectNumber(t *testing.T) {
+	cs := []int{28, 7, 6}
+	want := []bool{true, false, true}
+	for i, c := range cs {
+		got := checkPerfectNumber(c)
+		if !reflect.DeepEqual(got, want[i]) {
+			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
+		}
+	}
+}
+
 func TestNumFriendRequests(t *testing.T) {
 	cs := [][]int{{16, 16}, {16, 17, 18}, {20, 30, 100, 110, 120}, {16, 16, 16, 16, 16, 16, 16, 16}}
 	want := []int{2, 2, 3, 56}
