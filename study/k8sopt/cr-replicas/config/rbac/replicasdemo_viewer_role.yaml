@@ -1,0 +1,20 @@
+# permissions for end users to view replicasdemoes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: replicasdemo-viewer-role
+rules:
+- apiGroups:
+  - paas.github.com
+  resources:
+  - replicasdemoes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - paas.github.com
+  resources:
+  - replicasdemoes/status
+  verbs:
+  - get

@@ -1,0 +1,6 @@
+apiVersion: paas.github.com/v1
+kind: ReplicasDemo
+metadata:
+  name: replicasdemo-sample
+spec:
+  # TODO(user): Add fields here
