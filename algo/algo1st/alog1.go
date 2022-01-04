@@ -7,7 +7,80 @@ import (
 	"sort"
 )
 
-// 507. 完美数
+var f [2 * 55 * 55][55][55]int
+var g [][]int
+var n int
+
+// 6-913. 猫和老鼠
+func catMouseGame(graph [][]int) int {
+	g = graph
+	n = len(graph)
+	for k := 0; k < n*n; k++ {
+		for i := 0; i < n; i++ {
+			for j := 0; j < n; j++ {
+				f[k][i][j] = -1
+			}
+		}
+	}
+	return dfs(0, 1, 2)
+}
+
+// return 0: draw / 1: mouse / 2: cat
+func dfs(k, a, b int) int {
+	ans := f[k][a][b]
+	if a == 0 {
+		ans = 1
+	} else if b == a {
+		ans = 2
+	} else if k >= n*n {
+		ans = 0
+	} else if ans == -1 {
+		if k%2 == 0 { // mouse
+			win, draw := false, false
+			for _, v := range g[a] {
+				switch dfs(k+1, v, b) {
+				case 1:
+					win = true
+					break
+				case 0:
+					draw = true
+				}
+			}
+			if win {
+				ans = 1
+			} else if draw {
+				ans = 0
+			} else {
+				ans = 2
+			}
+		} else { // cat
+			win, draw := false, false
+			for _, v := range g[b] {
+				if v == 0 {
+					continue
+				}
+				switch dfs(k+1, a, v) {
+				case 2:
+					win = true
+					break
+				case 0:
+					draw = true
+				}
+			}
+			if win {
+				ans = 2
+			} else if draw {
+				ans = 0
+			} else {
+				ans = 1
+			}
+		}
+	}
+	f[k][a][b] = ans
+	return ans
+}
+
+// 5-507. 完美数
 func checkPerfectNumber(num int) bool {
 	ans := 1
 	limit := int(math.Sqrt(float64(num)))
@@ -19,7 +92,7 @@ func checkPerfectNumber(num int) bool {
 	return num != 1 && ans == num
 }
 
-// 825. 适龄的朋友
+// 4-825. 适龄的朋友
 func numFriendRequests(ages []int) int {
 	ans := 0
 	l := len(ages)
@@ -46,7 +119,7 @@ func numFriendRequests(ages []int) int {
 	return ans
 }
 
-// 1518. 换酒问题
+// 3-1518. 换酒问题
 func numWaterBottles(numBottles int, numExchange int) int {
 	ans := 0 // 喝了多少瓶
 	b := 0   // 空瓶
@@ -59,7 +132,7 @@ func numWaterBottles(numBottles int, numExchange int) int {
 	return ans
 }
 
-// 807. 保持城市天际线
+// 2-807. 保持城市天际线
 func maxIncreaseKeepingSkyline(grid [][]int) int {
 	l := len(grid)
 	row := make([]int, l, l)
@@ -86,7 +159,7 @@ func maxIncreaseKeepingSkyline(grid [][]int) int {
 	return ans
 }
 
-// 709. 转换成小写字母
+// 1-709. 转换成小写字母
 func toLowerCase(str string) string {
 	ans := []byte(str)
 	for i := 0; i < len(str); i++ {
