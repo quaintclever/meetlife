@@ -1,0 +1,6 @@
+domain: github.com
+layout:
+- go.kubebuilder.io/v3
+projectName: cr-replicas
+repo: github.com/quaintclever/meetlife
+version: "3"
