@@ -18,7 +18,9 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
+	corev1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -47,10 +49,26 @@ type ReplicasDemoReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.10.0/pkg/reconcile
 func (r *ReplicasDemoReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
 	// TODO(user): your logic here
+	cr := &paasv1.ReplicasDemo{}
+	if err := r.Get(ctx, req.NamespacedName, cr); err != nil {
+		logger.Error(err, fmt.Sprintf("cr get fail!, crName: %s, namespace: %s", cr.Name, cr.Namespace))
+		return ctrl.Result{}, err
+	}
+	logger.Info("perform reconcile", "name", cr.Name, "namespace", cr.Namespace)
 
+	// 新建 deployment
+	deployment := &corev1.Deployment{}
+	deployment.APIVersion = cr.APIVersion
+	deployment.Kind = "Deployment"
+	deployment.ObjectMeta.Name = cr.ObjectMeta.Name
+	deployment.ObjectMeta.Namespace = cr.ObjectMeta.Namespace
+	deployment.Spec = cr.Spec.DeploymentSpec
+	if err := r.Create(ctx, deployment); err != nil {
+		return ctrl.Result{}, err
+	}
 	return ctrl.Result{}, nil
 }
 

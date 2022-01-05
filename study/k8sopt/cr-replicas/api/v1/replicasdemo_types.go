@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	v1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,14 +29,21 @@ type ReplicasDemoSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of ReplicasDemo. Edit replicasdemo_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// do quaint spec define
+	// BatchSize 用来控制 replicas 启动时每次分批的数量
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=5
+	BatchSize int32 `json:"batchSize,omitempty"`
+
+	// DeploymentSpec  k8s 自带 deploymentSpec
+	DeploymentSpec v1.DeploymentSpec `json:"deploymentSpec,omitempty"`
 }
 
 // ReplicasDemoStatus defines the observed state of ReplicasDemo
 type ReplicasDemoStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
 }
 
 //+kubebuilder:object:root=true
