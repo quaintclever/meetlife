@@ -4,7 +4,7 @@ import (
 	"mosch/dao"
 )
 
-// Todo Model
+// To do Model
 type Todo struct {
 	ID     int    `json:"id"`
 	Title  string `json:"title"`

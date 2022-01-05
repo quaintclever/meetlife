@@ -8,10 +8,24 @@ import (
 )
 
 func Test(t *testing.T) {
-	got := 1
-	want := 1
-	if !reflect.DeepEqual(got, want) {
-		t.Error("error")
+	cs := []string{"j?qg??b"}
+	want := []string{"jaqgacb"}
+	for i, c := range cs {
+		got := modifyString(c)
+		if !reflect.DeepEqual(got, want[i]) {
+			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
+		}
+	}
+}
+
+func TestModifyString(t *testing.T) {
+	cs := []string{"j?qg??b"}
+	want := []string{"jlqghjb"}
+	for i, c := range cs {
+		got := modifyString(c)
+		if !reflect.DeepEqual(got, want[i]) {
+			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
+		}
 	}
 }
 

@@ -7,6 +7,37 @@ import (
 	"sort"
 )
 
+// 1576. 替换所有的问号
+func modifyString(s string) string {
+	ans := []byte(s)
+	l := len(ans)
+	pre := byte('a')
+	for i := 0; i < l-1; i++ {
+		if ans[i] == '?' {
+			if pre > 'm' {
+				ans[i] = pre - byte(i%2) - 1
+				if ans[i] == ans[i+1] {
+					ans[i] -= 1
+				}
+			} else {
+				ans[i] = pre + byte(i%2) + 1
+				if ans[i] == ans[i+1] {
+					ans[i] += 1
+				}
+			}
+		}
+		pre = ans[i]
+	}
+	if ans[l-1] == '?' {
+		if pre != 'z' {
+			ans[l-1] = pre + 1
+		} else {
+			ans[l-1] = pre - 1
+		}
+	}
+	return string(ans)
+}
+
 var f [2 * 55 * 55][55][55]int
 var g [][]int
 var n int
