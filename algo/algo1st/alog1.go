@@ -7,6 +7,12 @@ import (
 	"sort"
 )
 
+// 71. 简化路径
+func simplifyPath(path string) string {
+
+	return ""
+}
+
 // 1576. 替换所有的问号
 func modifyString(s string) string {
 	ans := []byte(s)

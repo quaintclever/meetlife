@@ -1,6 +1,11 @@
 ## k8sOperator 
 
-replicas demo
+**replicas demo** k8sOperator 控制 replicas demo
+
+执行下面命令时, 首先进入到代码目录
+```bash
+% cd study/k8sopt/cr-replicas
+```
 
 注: `bash` 代码块, `%` 后面跟的是终端需要输入的命令, 没有 `%` 表示是终端输出的内容
 
