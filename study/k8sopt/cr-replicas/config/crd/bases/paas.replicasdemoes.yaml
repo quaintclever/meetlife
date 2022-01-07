@@ -25,6 +25,9 @@ spec:
         - jsonPath: .status.ready
           name: Ready
           type: string
+        - jsonPath: .status.currentBatch
+          name: CurrentBatch
+          type: integer
       served: true
       storage: true
       subresources:

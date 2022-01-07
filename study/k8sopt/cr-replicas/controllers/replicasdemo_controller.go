@@ -63,13 +63,12 @@ func (r *ReplicasDemoReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		logger.Error(err, fmt.Sprintf("cr get fail!, crName: %s, namespace: %s", cr.Name, cr.Namespace))
 		return ctrl.Result{}, err
 	}
-	logger.Info("perform reconcile", "name", cr.Name, "namespace", cr.Namespace)
+	logger.Info("======= Perform Reconcile =======", "name", cr.Name, "namespace", cr.Namespace)
 
 	// 查询 deployment 是否存在, 不存在则创建
 	foundDeployment := &corev1.Deployment{}
 	err := r.Get(ctx, types.NamespacedName{Name: cr.Name, Namespace: cr.Namespace}, foundDeployment)
 	if err != nil && errors.IsNotFound(err) {
-		logger.Info("Creating Deployment", "deployment", cr.Name)
 		// 新建 deployment
 		deployment := &corev1.Deployment{}
 		deployment.APIVersion = cr.APIVersion
@@ -77,27 +76,50 @@ func (r *ReplicasDemoReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		deployment.ObjectMeta.Name = cr.ObjectMeta.Name
 		deployment.ObjectMeta.Namespace = cr.ObjectMeta.Namespace
 		deployment.Spec = cr.Spec.DeploymentSpec
-
-		deployment.OwnerReferences = []v1.OwnerReference{{
-			APIVersion: cr.APIVersion,
-			Kind:       cr.Kind,
-			Name:       cr.Name,
-			UID:        cr.UID,
-		}}
+		var initReplicas int32 = 0
+		deployment.Spec.Replicas = &initReplicas
+		// 如果一批次小于总 replicas, 启动一批次的 pod
+		// 设置 ownerReferences
+		if cr.Spec.BatchSize < *cr.Spec.DeploymentSpec.Replicas {
+			*deployment.Spec.Replicas = cr.Spec.BatchSize
+		}
+		trueVal := true
+		falseVal := false
+		deployment.OwnerReferences = append(deployment.OwnerReferences, v1.OwnerReference{
+			APIVersion:         cr.APIVersion,
+			Kind:               cr.Kind,
+			Name:               cr.Name,
+			UID:                cr.UID,
+			Controller:         &trueVal,
+			BlockOwnerDeletion: &falseVal,
+		})
+		logger.Info("======= Creating Deployment =======", "deployment", cr.Name)
 		if err := r.Create(ctx, deployment); err != nil {
 			return ctrl.Result{}, err
 		}
-	} else if err == nil {
-		// 根据 cr, 修改 deployment 状态
-		if *foundDeployment.Spec.Replicas != *cr.Spec.DeploymentSpec.Replicas {
-			foundDeployment.Spec.Replicas = cr.Spec.DeploymentSpec.Replicas
-			logger.Info("Updating Deployment", "deployment", cr.Name)
-			err = r.Update(ctx, foundDeployment)
-		}
 
-		// 修改cr 状态
-		cr.Status.Ready = fmt.Sprintf("%d/%d", foundDeployment.Status.ReadyReplicas, foundDeployment.Status.Replicas)
+		cr.Status.CurrentBatch = 1
+		cr.Status.Ready = fmt.Sprintf("%d/%d", 0, foundDeployment.Spec.Replicas)
+		logger.Info("======= Update CR Status 1 =======", "crName:", cr.Name)
 		err = r.Update(ctx, cr)
+	} else if err == nil {
+		// 如果deploy 里 ready 的数量 等于总数量, 根据 cr, 修改 deployment 状态
+		if *foundDeployment.Spec.Replicas != *cr.Spec.DeploymentSpec.Replicas &&
+			foundDeployment.Status.ReadyReplicas == *foundDeployment.Spec.Replicas {
+			// 下一批次 到顶了.
+			if *foundDeployment.Spec.Replicas+cr.Spec.BatchSize >= *cr.Spec.DeploymentSpec.Replicas {
+				*foundDeployment.Spec.Replicas = *cr.Spec.DeploymentSpec.Replicas
+			} else {
+				*foundDeployment.Spec.Replicas = *foundDeployment.Spec.Replicas + cr.Spec.BatchSize
+			}
+			logger.Info("======= Updating Deployment =======", "deployment", cr.Name)
+			err = r.Update(ctx, foundDeployment)
+			// 修改cr 状态
+			cr.Status.CurrentBatch = cr.Status.CurrentBatch + 1
+			cr.Status.Ready = fmt.Sprintf("%d/%d", foundDeployment.Status.ReadyReplicas, foundDeployment.Status.Replicas)
+			logger.Info("======= Update CR Status 2 =======", "crName:", cr.Name)
+			err = r.Update(ctx, cr)
+		}
 	}
 	return ctrl.Result{}, nil
 }

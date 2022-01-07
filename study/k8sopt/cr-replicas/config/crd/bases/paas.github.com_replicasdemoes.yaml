@@ -7328,6 +7328,8 @@ spec:
           status:
             description: ReplicasDemoStatus defines the observed state of ReplicasDemo
             properties:
+              currentBatch:
+                type: integer
               ready:
                 description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
                   of cluster Important: Run "make" to regenerate code after modifying

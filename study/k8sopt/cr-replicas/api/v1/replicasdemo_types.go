@@ -43,7 +43,8 @@ type ReplicasDemoSpec struct {
 type ReplicasDemoStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Ready string `json:"ready,omitempty"`
+	Ready        string `json:"ready,omitempty"`
+	CurrentBatch int    `json:"currentBatch,omitempty"`
 }
 
 //+kubebuilder:object:root=true
