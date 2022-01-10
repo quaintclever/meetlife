@@ -9,9 +9,20 @@ import (
 
 func Test(t *testing.T) {
 	cs := []string{"j?qg??b"}
-	want := []string{"jaqgacb"}
+	want := []string{"jlqghjb"}
 	for i, c := range cs {
 		got := modifyString(c)
+		if !reflect.DeepEqual(got, want[i]) {
+			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
+		}
+	}
+}
+
+func TestSimplifyPath(t *testing.T) {
+	cs := []string{"/home/", "/../", "/home//foo/", "/a/./b/../../c/", "/a//b////c/d//././/.."}
+	want := []string{"/home", "/", "/home/foo", "/c", "/a/b/c"}
+	for i, c := range cs {
+		got := simplifyPath(c)
 		if !reflect.DeepEqual(got, want[i]) {
 			t.Errorf("error, req:%v, want:%v, got:%v", c, want[i], got)
 		}

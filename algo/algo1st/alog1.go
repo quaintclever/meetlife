@@ -2,18 +2,63 @@ package algo1st
 
 import (
 	"algo/tool"
+	"container/list"
 	"fmt"
 	"math"
 	"sort"
 )
 
-// 71. 简化路径
+// 8-71. 简化路径
 func simplifyPath(path string) string {
-
-	return ""
+	stk := list.New()
+	l := len(path)
+	for i := 0; i < l; i++ {
+		if path[i] == '/' {
+			str := ""
+			mul := true
+			j := i + 1
+			for ; j < l; j++ {
+				if mul && path[j] == '/' {
+					continue
+				} else {
+					mul = false
+				}
+				if path[j] == '/' {
+					break
+				}
+				str += string(path[j])
+			}
+			i = j - 1
+			// 如果是 . 表示当前目录
+			if str == "." {
+				continue
+			}
+			// 如果是 .. 表示回到上级目录
+			if str == ".." {
+				front := stk.Back()
+				if front != nil {
+					stk.Remove(front)
+				}
+				continue
+			}
+			if str != "" {
+				stk.PushBack(str)
+			}
+		}
+	}
+	ans := ""
+	for stk.Len() > 0 {
+		ele := stk.Front()
+		ans += "/" + ele.Value.(string)
+		stk.Remove(ele)
+	}
+	if ans == "" {
+		ans = "/"
+	}
+	return ans
 }
 
-// 1576. 替换所有的问号
+// 7-1576. 替换所有的问号
 func modifyString(s string) string {
 	ans := []byte(s)
 	l := len(ans)
