@@ -13,37 +13,24 @@ func simplifyPath(path string) string {
 	stk := list.New()
 	l := len(path)
 	for i := 0; i < l; i++ {
-		if path[i] == '/' {
-			str := ""
-			mul := true
-			j := i + 1
-			for ; j < l; j++ {
-				if mul && path[j] == '/' {
-					continue
-				} else {
-					mul = false
-				}
-				if path[j] == '/' {
-					break
-				}
-				str += string(path[j])
-			}
-			i = j - 1
-			// 如果是 . 表示当前目录
-			if str == "." {
+		str := ""
+		mul := true
+		for i++; i < l; i++ {
+			if mul = mul && path[i] == '/'; mul {
 				continue
 			}
+			if path[i] == '/' {
+				break
+			}
+			str += string(path[i])
+		}
+		if i--; str == ".." {
 			// 如果是 .. 表示回到上级目录
-			if str == ".." {
-				front := stk.Back()
-				if front != nil {
-					stk.Remove(front)
-				}
-				continue
+			if front := stk.Back(); front != nil {
+				stk.Remove(front)
 			}
-			if str != "" {
-				stk.PushBack(str)
-			}
+		} else if str != "." && str != "" {
+			stk.PushBack(str)
 		}
 	}
 	ans := ""
