@@ -100,9 +100,6 @@ func (r *ReplicasDemoReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		}
 
 		cr.Status.CurrentBatch = 1
-		cr.Status.Ready = fmt.Sprintf("%d/%d", 0, foundDeployment.Spec.Replicas)
-		logger.Info("======= Update CR Status 1 =======", "crName:", cr.Name)
-		err = r.Status().Update(ctx, cr)
 	} else if err == nil {
 		// 如果deploy 里 ready 的数量 等于总数量, 根据 cr, 修改 deployment 状态
 		if *foundDeployment.Spec.Replicas != *cr.Spec.DeploymentSpec.Replicas &&
@@ -117,14 +114,16 @@ func (r *ReplicasDemoReconciler) Reconcile(ctx context.Context, req ctrl.Request
 			err = r.Update(ctx, foundDeployment)
 			// 修改cr 状态
 			cr.Status.CurrentBatch = cr.Status.CurrentBatch + 1
-			cr.Status.Ready = fmt.Sprintf("%d/%d", foundDeployment.Status.ReadyReplicas, foundDeployment.Status.Replicas)
-			logger.Info("======= Update CR Status 2 =======", "crName:", cr.Name)
-			err = r.Status().Update(ctx, cr)
 		}
 	} else {
 		logger.Error(err, "======= Reconcile Error =======")
 		return ctrl.Result{}, err
 	}
+
+	cr.Status.Ready = fmt.Sprintf("%d/%d", foundDeployment.Status.ReadyReplicas, foundDeployment.Status.Replicas)
+	logger.Info("======= Update CR Status =======", "crName:", cr.Name)
+	err = r.Status().Update(ctx, cr)
+
 	return ctrl.Result{
 		// 10s 之后再次调用
 		RequeueAfter: time.Second * 10,
