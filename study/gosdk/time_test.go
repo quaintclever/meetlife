@@ -22,3 +22,10 @@ func TestTimeFmt(t *testing.T) {
 	fmt.Println("==============================")
 	fmt.Println(sprintf)
 }
+
+func TestTimeAddTime(t *testing.T) {
+	now := time.Now()
+	dd, _ := time.ParseDuration("168h")
+	dd1 := now.Add(dd)
+	fmt.Println(dd1)
+}
