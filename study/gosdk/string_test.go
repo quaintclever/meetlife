@@ -31,4 +31,13 @@ func TestInt64ToString(t *testing.T) {
 	//fmt.Println(string(i))
 	fmt.Println(strconv.Itoa(i))
 	fmt.Println(strconv.FormatInt(int64(i), 10))
+
+	str := "1000"
+	parseInt, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(parseInt)
+
 }
