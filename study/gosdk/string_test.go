@@ -2,6 +2,7 @@ package gosdk
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 )
 
@@ -22,4 +23,12 @@ func TestCaseString(t *testing.T) {
 	fmt.Println(StringType(s1))
 	fmt.Println(StringType(s2))
 	fmt.Println(StringType(s3))
+}
+
+func TestInt64ToString(t *testing.T) {
+	var i = 100
+	// conversion from int64 to string yields a string of one rune, not a string of digits (did you mean fmt.Sprint(x)?)
+	//fmt.Println(string(i))
+	fmt.Println(strconv.Itoa(i))
+	fmt.Println(strconv.FormatInt(int64(i), 10))
 }
