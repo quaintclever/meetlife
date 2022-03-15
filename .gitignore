@@ -13,12 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 vendor/
-vlumes/
+vlumes/mysql
 
 # quaint used
 bin/
 mosch/vendor/
 .idea
+go.sum
 /algo/algo1st/temp.txt
 
 # staudy opa used
