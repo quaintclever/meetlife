@@ -18,8 +18,8 @@ func init() {
 }
 
 func AddCntN(iter int, key string) {
-	mu.GetShard(key).Mu.Lock()
-	defer mu.GetShard(key).Mu.Unlock()
+	mu.Lock(key)
+	defer mu.Unlock(key)
 	for i := 0; i < iter; i++ {
 		switch key {
 		case "A":

@@ -44,7 +44,17 @@ func MakeSegmentLock(sct int) SegmentLock {
 	return s
 }
 
-func (s SegmentLock) GetShard(key string) *shard {
+func (s SegmentLock) Lock(key string) {
+	sh := s.getShard(key)
+	sh.Mu.Lock()
+}
+
+func (s SegmentLock) Unlock(key string) {
+	sh := s.getShard(key)
+	sh.Mu.Unlock()
+}
+
+func (s SegmentLock) getShard(key string) *shard {
 	return s.shard[uint(fnv32(key))%uint(s.shardCount)]
 }
 
