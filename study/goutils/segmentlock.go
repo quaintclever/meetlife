@@ -1,4 +1,4 @@
-package locktl
+package goutils
 
 import (
 	"math"
