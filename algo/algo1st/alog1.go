@@ -1,10 +1,10 @@
 package algo1st
 
 import (
-	"algo/tool"
 	"container/list"
 	"fmt"
 	"math"
+	"meetlife/algo/tool"
 	"sort"
 )
 

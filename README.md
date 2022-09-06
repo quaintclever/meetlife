@@ -7,8 +7,18 @@ Solve small problems in daily life.
 
 ### algo 
 练习算法
+- go
+
+### gostudy
+学习gosdk, 和一些三方包
+
 
 ### livetl
 live tool, 生活中的小工具
-### study
-学习一些三方包, 或者基础记录
+- go
+
+### webstudy
+web 学习记录
+- html
+- css
+- js
