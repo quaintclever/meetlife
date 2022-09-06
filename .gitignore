@@ -19,6 +19,7 @@ vlumes/mysql
 bin/
 mosch/vendor/
 .idea
+.vscode
 go.sum
 /algo/algo1st/temp.txt
 
