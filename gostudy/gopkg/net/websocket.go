@@ -1,4 +1,4 @@
-package net
+package net_test
 
 import (
 	"fmt"
