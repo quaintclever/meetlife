@@ -3,12 +3,34 @@ package gin_test
 import (
 	"fmt"
 	"net/http"
+	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
+
+var ati atomic.Int64
+
+// 当第一个没有返回的时候，第二个，第三个也会阻塞。
+func TestGinRouterSleep(t *testing.T) {
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		ati.Add(1)
+		if ati.Load()%2 == 0 {
+			time.Sleep(time.Second * 10)
+		}
+		c.JSON(
+			200,
+			map[string]interface{}{
+				"currentNum": ati.Load(),
+			},
+		)
+	})
+	r.Run()
+}
 
 // 测试 gin 和 http 是否可以同时监听到 health 方法
 // 请参考 http.server.go  => func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request)
