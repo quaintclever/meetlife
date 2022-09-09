@@ -20,7 +20,7 @@ func TestGinRouterSleep(t *testing.T) {
 	r.GET("/", func(c *gin.Context) {
 		ati.Add(1)
 		if ati.Load()%2 == 0 {
-			time.Sleep(time.Second * 10)
+			time.Sleep(time.Millisecond * 3000)
 		}
 		c.JSON(
 			200,
