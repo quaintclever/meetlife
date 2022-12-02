@@ -4,8 +4,9 @@ import (
 	"container/list"
 	"fmt"
 	"math"
-	"meetlife/algo/tool"
 	"sort"
+
+	"github.com/quaintclever/meetlife/algo/tool"
 )
 
 // 8-71. 简化路径

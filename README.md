@@ -10,8 +10,7 @@ Solve small problems in daily life.
 - go
 
 ### gostudy
-学习gosdk, 和一些三方包
-
+学习gosdk, 和一些三方包，包含多个gomod，vscode需要开启 gopls -> experimentalWorkspaceModule=true
 
 ### livetl
 live tool, 生活中的小工具

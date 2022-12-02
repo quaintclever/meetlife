@@ -4,7 +4,7 @@
 ### docker-mysql
 ```bash
 # 将mysql 的数据 挂载到本地
-docker run --name mysql8019 -p 13306:3306 -e MYSQL_ROOT_PASSWORD=root1234 -v /Users/qicong/disk-quaint/go-project/meetlife/vlumes/mysql:/var/lib/mysql -d mysql:8.0.19
+docker run --name mysql8019 -p 13306:3306 -e MYSQL_ROOT_PASSWORD=root1234 -v /Users/quaint/disk-quaint/go-project/meetlife/vlumes/mysql:/var/lib/mysql -d mysql:8.0.19
 
 ### 查看mysql 容器id
 docker ps

@@ -2,13 +2,11 @@ package gosdk
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"testing"
-
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
 // 测试 health 方法是否可以被 80 8080 同时监听
@@ -27,15 +25,15 @@ func TestHttpHandler(t *testing.T) {
 
 	// service server
 	go func() {
-		if err := svc.ListenAndServe(); err != nil && errors.Cause(err) != http.ErrServerClosed {
-			logrus.Fatalf("service server exit error: %v", err)
+		if err := svc.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("service server exit error: %v", err)
 		}
 	}()
 
 	// health check server
 	go func() {
-		if err := hc.ListenAndServe(); err != nil && errors.Cause(err) != http.ErrServerClosed {
-			logrus.Fatalf("health check server exit error: %v", err)
+		if err := hc.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("health check server exit error: %v", err)
 		}
 	}()
 
