@@ -13,16 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 vendor/
-vlumes/mysql
 
 # quaint used
 bin/
-mosch/vendor/
 .idea
 .vscode
-go.sum
-/algo/algo1st/temp.txt
 
-# staudy opa used
-rbac.tar.gz
-nohup.out
+/algo/leetcode.txt

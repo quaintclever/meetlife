@@ -9,15 +9,11 @@ Solve small problems in daily life.
 练习算法
 - go
 
-### gostudy
-学习gosdk, 和一些三方包，包含多个gomod，vscode需要开启 gopls -> experimentalWorkspaceModule=true
+### base
+go 基础练习
 
-### livetl
-live tool, 生活中的小工具
-- go
+### ipkg（import pkg）
+学习三方包
 
-### webstudy
-web 学习记录
-- html
-- css
-- js
+### pkg
+生活中的小工具
