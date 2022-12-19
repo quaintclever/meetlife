@@ -2,10 +2,23 @@ package sbase
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"testing"
 	"time"
 )
+
+func TestZoneFmt(t *testing.T) {
+	val := "2006-12-19T14:09:02+0800"
+	// ti := time.Now()
+	// fmt.Println(ti.Local().Format("2006-01-02T15:04:05Z0700"))
+	res, err := time.ParseInLocation("2006-01-02T15:04:05Z0700", val, time.Local)
+	if err != nil {
+		log.Fatalf(err.Error())
+	} else {
+		fmt.Println(res)
+	}
+}
 
 func TestTimeFmt(t *testing.T) {
 	fmt.Println("hello time fmt")

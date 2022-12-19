@@ -1,7 +1,9 @@
 package gin
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"sync/atomic"
 	"testing"
@@ -11,6 +13,52 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
+
+type MyTime time.Time
+
+func (mt *MyTime) MarshalJSON() ([]byte, error) {
+	stamp := fmt.Sprintf("\"%s\"", time.Time(*mt).Format("2006-01-02T15:04:05Z0700"))
+	return []byte(stamp), nil
+}
+
+func (mt *MyTime) UnmarshalJSON(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
+	var val string
+	err := json.Unmarshal(data, &val)
+	if err != nil {
+		return err
+	}
+
+	res, err := time.ParseInLocation("2006-01-02T15:04:05Z0700", val, time.Local)
+	if err != nil {
+		return err
+	}
+	*mt = MyTime(res)
+	return nil
+}
+
+type TestTimeBody struct {
+	Name string
+	Ti   MyTime
+}
+
+func TestGinBindTime(t *testing.T) {
+	r := gin.Default()
+	r.POST("/", func(ctx *gin.Context) {
+		dto := &TestTimeBody{}
+		err := ctx.ShouldBindJSON(dto)
+		if err != nil {
+			log.Fatalf("err:%s", err.Error())
+		}
+		ctx.JSON(
+			200,
+			dto,
+		)
+	})
+	r.Run()
+}
 
 var ati atomic.Int64
 
